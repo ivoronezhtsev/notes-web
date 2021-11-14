@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
+<head>
+    <title>Заметки</title>
+</head>
+<body>
+<h1>Список заметок</h1>
+<br>
+<table>
+    <tr>
+        <th>Заметка</th>
+        <th>Операции</th>
+    </tr>
+    <tr th:each="note: ${notes}">
+            <td th:text="${note.text}"></td>
+            <td>
+                <a th:href="@{/update/{id}(id=${note.id})}"><input type="button" value="Изменить"></a>
+                <a th:href="@{/delete/{id}(id=${note.id})}"><input type="button" value="Удалить"></a>
+            </td>
+    </tr>
+</table>
+<br>
+<input type="button" th:onclick="window.location.href='/create'" value="Добавить"/>
+</body>
+</html>

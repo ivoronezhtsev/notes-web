@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
+<head>
+    <title>Добавление заметки</title>
+</head>
+<body>
+    <h1>Добавление заметки</h1>
+    <br>
+    <form action="#" th:action="@{/save/{id}(id=${note.id})}" th:object="${note}" method="post">
+        Текст: <input type="text" th:field="${note.text}"/>
+        <br><br>
+        <input type="submit" value="Сохранить">
+    </form>
+</body>
+</html>
