@@ -9,9 +9,9 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>ru.voronezhtsev</groupId>
-	<artifactId>notes</artifactId>
+	<artifactId>notes-web</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>notes</name>
+	<name>notes-web</name>
 	<description>Notes Web Application</description>
 	<properties>
 		<java.version>11</java.version>
