@@ -23,41 +23,41 @@ public class NotesController {
         this.noteDao = noteDao;
     }
 
-    @GetMapping("/")
+    @GetMapping("/notes")
     public String index(Model model) {
         val notes = new ArrayList<Note>();
         noteDao.findAll().forEach(notes::add);
         model.addAttribute("notes", notes);
-        return "index";
+        return "notes";
     }
 
-    @RequestMapping("/create")
+    @RequestMapping("/note/create")
     public String create(Model model) {
         val note = new Note();
         model.addAttribute("note", note);
         return "info";
     }
 
-    @RequestMapping("/save")
+    @RequestMapping("/note/save")
     public String save(@ModelAttribute("note") Note note) {
         noteDao.save(note);
-        return "redirect:/";
+        return "redirect:/notes";
     }
 
-    @RequestMapping(value = "/save/{id}")
+    @RequestMapping(value = "/note/save/{id}")
     public String save(@PathVariable("id") Integer id, @ModelAttribute("note") Note note) {
         note.setId(id);
         noteDao.save(note);
-        return "redirect:/";
+        return "redirect:/notes";
     }
 
-    @RequestMapping("/update/{id}")
+    @RequestMapping("/note/update/{id}")
     public String update(@PathVariable("id") Integer id, Model model) {
         model.addAttribute("note", noteDao.findById(id).orElseThrow(NoSuchElementException::new));
         return "info";
     }
 
-    @RequestMapping("/delete/{id}")
+    @RequestMapping("/note/delete/{id}")
     public String delete(@PathVariable("id") Integer id) {
         noteDao.deleteById(id);
         return "redirect:/";

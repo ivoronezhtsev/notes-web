@@ -6,7 +6,7 @@
 <body>
     <h1>Добавление заметки</h1>
     <br>
-    <form action="#" th:action="@{/save/{id}(id=${note.id})}" th:object="${note}" method="post">
+    <form action="#" th:action="@{/note/save/{id}(id=${note.id})}" th:object="${note}" method="post">
         Текст: <input type="text" th:field="${note.text}"/>
         <br><br>
         <input type="submit" value="Сохранить">
