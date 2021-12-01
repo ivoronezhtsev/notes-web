@@ -1,8 +1,10 @@
 package ru.voronezhtsev.notes;
 
+import lombok.RequiredArgsConstructor;
 import lombok.val;
-import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -14,19 +16,15 @@ import java.util.ArrayList;
 import java.util.NoSuchElementException;
 
 @Controller
-@SpringBootApplication
+@RequiredArgsConstructor(onConstructor = @__(@Autowired))
 public class NotesController {
-
     private final NoteDao noteDao;
-
-    public NotesController(NoteDao noteDao) {
-        this.noteDao = noteDao;
-    }
 
     @GetMapping("/notes")
     public String index(Model model) {
         val notes = new ArrayList<Note>();
-        noteDao.findAll().forEach(notes::add);
+        noteDao.findByUsername(getUsername()).forEach(notes::add);
+        model.addAttribute("username", getUsername());
         model.addAttribute("notes", notes);
         return "notes";
     }
@@ -40,6 +38,7 @@ public class NotesController {
 
     @RequestMapping("/note/save")
     public String save(@ModelAttribute("note") Note note) {
+        note.setUsername(getUsername());
         noteDao.save(note);
         return "redirect:/notes";
     }
@@ -47,6 +46,7 @@ public class NotesController {
     @RequestMapping(value = "/note/save/{id}")
     public String save(@PathVariable("id") Integer id, @ModelAttribute("note") Note note) {
         note.setId(id);
+        note.setUsername(getUsername());
         noteDao.save(note);
         return "redirect:/notes";
     }
@@ -60,10 +60,14 @@ public class NotesController {
     @RequestMapping("/note/delete/{id}")
     public String delete(@PathVariable("id") Integer id) {
         noteDao.deleteById(id);
-        return "redirect:/";
+        return "redirect:/notes";
     }
 
-    public static void main(String[] args) {
-        SpringApplication.run(NotesController.class, args);
+    private String getUsername() {
+        if (SecurityContextHolder.getContext().getAuthentication().getPrincipal() instanceof User) {
+            User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+            return user.getUsername();
+        }
+        return null;
     }
 }

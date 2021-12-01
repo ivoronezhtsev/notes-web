@@ -7,26 +7,18 @@ import javax.persistence.*;
 
 import static javax.persistence.GenerationType.SEQUENCE;
 
-@Entity
+@Getter
+@Setter
+@Entity(name = "notes")
 public class Note {
-
     @Id
     @GeneratedValue(strategy = SEQUENCE)
     @Column(nullable = false)
-    @Getter
-    @Setter
     private Integer id;
 
     @Column
-    @Getter
-    @Setter
     private String text;
 
-    public  String getText() {
-        return text;
-    }
-
-    /*@ManyToOne
-    @JoinColumn(name = "user_id")
-    private User user;*/
+    @Column
+    private String username;
 }
